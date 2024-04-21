@@ -100,7 +100,7 @@ export default function Home() {
                                         className="flex items-center justify-center text-gray-900 border-2 h-64 w-48 rounded-t-lg  border-white product-img bg-cat"
                                         // className=``
                                         style={{
-                                            backgroundImage: `url(/${product.image})`,
+                                            backgroundImage: `url(${product.image})`,
                                             backgroundPosition: "center",
                                             backgroundRepeat: "no-repeat",
                                             backgroundSize: "cover",
