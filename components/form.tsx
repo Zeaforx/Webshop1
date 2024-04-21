@@ -2,7 +2,7 @@ import { Button, Checkbox, Label, TextInput, Select } from "flowbite-react";
 import { db } from "./firebase";
 import data from "../components/place.json";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, FormEvent, ChangeEvent } from "react";
 import { addDoc, collection, serverTimestamp } from "firebase/firestore";
 export default function Form() {
     const [form, setForm] = useState({
@@ -39,7 +39,7 @@ export default function Form() {
     //     <option  onChange={handleChange}>{country}</option>
     // ));
     // const x = data.
-    function handleChange(event) {
+    function handleChange(event: ChangeEvent<HTMLInputElement>) {
         setForm((prevform) => {
             return {
                 ...prevform,
