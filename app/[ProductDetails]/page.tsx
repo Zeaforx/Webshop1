@@ -1,7 +1,7 @@
 "use client";
 import Image from "next/image";
 
-import PayPalButton from "@/components/PayPalButton";
+// import PayPalButton from "@/components/PayPalButton";
 import { useRouter } from "next/navigation";
 import { useSearchParams } from "next/navigation";
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
