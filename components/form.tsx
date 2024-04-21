@@ -35,9 +35,9 @@ export default function Form() {
     //     }
     // }
 
-    const countries = data.place.map((country) => (
-        <option onChange={handleChange}>{country}</option>
-    ));
+    // const countries = data.place.map((country) => (
+    //     <option  onChange={handleChange}>{country}</option>
+    // ));
     // const x = data.
     function handleChange(event) {
         setForm((prevform) => {
