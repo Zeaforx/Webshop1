@@ -9,8 +9,19 @@ import Image from "next/image";
 import Link from "next/link";
 import ProductsList from "@/components/ProductsList";
 
+interface Product {
+    id: number;
+    name: string;
+    category: string;
+    description: string;
+    image: string;
+    rating: Float32Array;
+    price: number;
+    title: string;
+}
+
 export default function Home() {
-    const [products, setProducts] = useState([]);
+    const [products, setProducts] = useState<Product[]>([]);
     // const stuff = [];
 
     useEffect(() => {
@@ -29,7 +40,7 @@ export default function Home() {
             fill: "rgba(255, 255, 255, 1)",
         },
     };
-
+    // console.log(products);
     return (
         <main className="bg-gray-900">
             {/* // className="bg-gradient-to-r from-green-300 via-blue-500 to-purple-600"> */}
@@ -68,7 +79,7 @@ export default function Home() {
                         const id = product.id;
                         const slug = id;
                         // stuff.push(product);
-                        // console.log(stuff[ran]);
+
                         // const slug = id.toLowerCase().replace(/\s+/g, "-");
                         return (
                             <div key={product.id}>
