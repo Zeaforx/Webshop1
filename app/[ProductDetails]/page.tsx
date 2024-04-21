@@ -9,7 +9,7 @@ import Checkout from "@/components/Checkout";
 import { useState, useEffect } from "react";
 import Form from "@/components/form";
 const initialOptions = {
-    "client-id":
+    clientId:
         "ATD8n3IfbhNYPl7czkKaVCsPnBJ31gWLMLqQ8YViGYmUZK4BLrXQEHbor9h0kJCM_YKnUN9Y88At4yvm",
     currency: "USD",
     intent: "capture",
