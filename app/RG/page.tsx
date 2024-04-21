@@ -33,7 +33,7 @@ function RC() {
 
     const countrymetadatas = Country.getAllCountries().map((country) => (
         <option
-            onClick={() => setCountryISO(country.isoCode)}
+            // onClick={() => setCountryISO(country.isoCode)}
             key={country.isoCode}
         >
             {country.name} - {country.isoCode}
