@@ -10,7 +10,6 @@ function RG() {
         <form>
             <select></select>
         </form>
-        // <Checkout></Checkout>
     );
 }
 
