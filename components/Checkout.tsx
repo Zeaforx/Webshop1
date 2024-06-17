@@ -1,3 +1,22 @@
+// import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
+
+// function Checkout() {
+//     // const initialOptions = {
+//     //     clientId:
+//     //         "ATD8n3IfbhNYPl7czkKaVCsPnBJ31gWLMLqQ8YViGYmUZK4BLrXQEHbor9h0kJCM_YKnUN9Y88At4yvm",
+//     //     currency: "USD",
+//     //     intent: "capture",
+//     // };
+//     return (
+//         <div></div>
+//         // <PayPalScriptProvider options={initialOptions}>
+//         //     <Checkout price={100}></Checkout>
+//         // </PayPalScriptProvider>
+//     );
+// }
+
+// export default Checkout;
+
 import { PayPalButtons, usePayPalScriptReducer } from "@paypal/react-paypal-js";
 import { useState } from "react";
 

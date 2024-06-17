@@ -4,7 +4,13 @@ import { useState, useEffect } from "react";
 import Head from "next/head";
 import { TypeAnimation } from "react-type-animation";
 import { motion } from "framer-motion";
-import { BeakerIcon } from "@heroicons/react/24/solid";
+import { BeakerIcon, XMarkIcon } from "@heroicons/react/24/solid";
+import {
+    CollectionHook,
+    useCollectionData,
+} from "react-firebase-hooks/firestore";
+import { collection } from "firebase/firestore";
+import { db } from "@/components/firebase";
 import Image from "next/image";
 import Link from "next/link";
 import ProductsList from "@/components/ProductsList";
@@ -19,10 +25,32 @@ interface Product {
     price: number;
     title: string;
 }
+interface Data {
+    description: String;
+    img: String;
+
+    price: number;
+    title: String;
+}
 
 export default function Home() {
     const [products, setProducts] = useState<Product[]>([]);
-    // const stuff = [];
+    // const q = query(
+    //     collection(db, "Products"),
+    //     orderBy("createdAt", "desc"),
+    //     limit(25)
+    // );
+    const colref = collection(db, "products");
+
+    const [data, loading, error] = useCollectionData(colref);
+    if (data) {
+        // console.log(data);
+    }
+    // if (error) {
+    //     return <h1>{error.message}</h1>;
+    // }
+    const productss: String[] = data;
+    // console.log(productss);
 
     useEffect(() => {
         fetch("https://fakestoreapi.com/products")
@@ -40,7 +68,7 @@ export default function Home() {
             fill: "rgba(255, 255, 255, 1)",
         },
     };
-    // console.log(products);
+    console.log(data);
     return (
         <main className="bg-gray-900">
             {/* // className="bg-gradient-to-r from-green-300 via-blue-500 to-purple-600"> */}
@@ -75,52 +103,83 @@ export default function Home() {
             {/* </section> */}
             <section className="flex bg-gray-900 text-white justify-center items-center">
                 <div className="grid grid-cols-1 lg:grid-cols-5 md:grid-cols-3 gap-x-16 gap-y-6 ">
-                    {products.map((product) => {
-                        const id = product.id;
-                        const slug = id;
-                        // stuff.push(product);
+                    {loading ? (
+                        <div className="lds-ring">
+                            <div></div>
+                            <div></div>
+                            <div></div>
+                            <div></div>
+                        </div>
+                    ) : (
+                        <></>
+                    )}
+                    {error ? (
+                        <div className="bg-red-700">
+                            <h1>
+                                An error occoured please refresh the browser
+                            </h1>
+                        </div>
+                    ) : (
+                        <></>
+                    )}
+                    {data ? (
+                        productss.map((product) => {
+                            const id = product.title;
+                            const slug = id;
+                            // stuff.push(product);
 
-                        // const slug = id.toLowerCase().replace(/\s+/g, "-");
-                        return (
-                            <div key={product.id}>
-                                <Link
-                                    href={{
-                                        pathname: `/${slug}`,
-                                        query: {
-                                            title: product.title,
-                                            description: product.description,
-                                            price: product.price,
-                                            // stuffs: stuff[id],
-                                            image: product.image,
-                                        },
-                                    }}
-                                    // as={slug}
-                                >
-                                    <div
-                                        className="flex items-center justify-center text-gray-900 border-2 h-64 w-48 rounded-t-lg  border-white product-img bg-cat"
-                                        // className=``
-                                        style={{
-                                            backgroundImage: `url(${product.image})`,
-                                            backgroundPosition: "center",
-                                            backgroundRepeat: "no-repeat",
-                                            backgroundSize: "cover",
+                            // const slug = id.toLowerCase().replace(/\s+/g, "-");
+                            return (
+                                <div key={product.title}>
+                                    <Link
+                                        href={{
+                                            pathname: `/${slug}`,
+                                            query: {
+                                                title: product.title,
+                                                description:
+                                                    product.description,
+                                                price: product.price,
+                                                // stuffs: stuff[id],
+                                                image: `/products/${product.img}`,
+                                                // image: product.img,
+                                            },
                                         }}
+                                        // as={slug}
                                     >
-                                        {/* <p>{product.title}</p> */}
-                                        {/* <Image
-                                        height={100}
-                                        width={100}
-                                        src={product.image}
-                                    /> */}
-                                    </div>
-                                    <div className=" bg-white text-black over-text self-end  w-48">
-                                        <span>{product.title}</span>
-                                        <span>{product.price}</span>
-                                    </div>
-                                </Link>
-                            </div>
-                        );
-                    })}
+                                        <div
+                                            className="flex items-center justify-center text-gray-900 border-2 h-64 w-48 rounded-t-lg  border-white product-img bg-cat"
+                                            // className=``
+                                            style={{
+                                                backgroundImage: `url("/products/${product.img}")`,
+                                                // backgroundImage: `url(${product.img})`,
+                                                backgroundPosition: "center",
+                                                backgroundRepeat: "no-repeat",
+                                                backgroundSize: "cover",
+                                            }}
+                                        >
+                                            {/* <p>{product.title}</p> */}
+                                            {/* <Image
+                                                alt="img failed to load"
+                                                height={500}
+                                                width={500}
+                                                layout="responsive"
+                                                src={product.img}
+                                            /> */}
+                                        </div>
+                                        <div className=" bg-white text-black over-text self-end  w-48">
+                                            <span>{product.title}</span>
+                                            {/* <span>{product.price}</span> */}
+                                        </div>
+                                    </Link>
+                                </div>
+                            );
+                        })
+                    ) : (
+                        <></>
+                    )}
+
+                    {}
+                    {/* {data ? console.log(data) : (<></>)} */}
                 </div>
             </section>
             <ProductsList></ProductsList>
@@ -131,6 +190,9 @@ export default function Home() {
 // import Image from "next/image";
 // import Link from "next/link";
 
+//   ) : (
+//       <></>
+//   )}
 // export default function Home() {
 //     return (
 //         <main>

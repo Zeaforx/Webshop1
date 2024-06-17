@@ -3,60 +3,59 @@ import Image from "next/image";
 
 // import PayPalButton from "@/components/PayPalButton";
 import { useRouter } from "next/navigation";
+import { TextInput, Navbar, NavbarBrand, NavbarLink } from "flowbite-react";
 import { useSearchParams } from "next/navigation";
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
-import Checkout from "@/components/Checkout";
+import {  XMarkIcon } from "@heroicons/react/24/solid";
+
+// import Checkout from "@/components/Checkout";
 import { useState, useEffect } from "react";
 import Form from "@/components/form";
+// interface Params {
+//     title: string;
+//     price: string;
+//     description: string;
+//     image: string;
+// }
 const initialOptions = {
-    clientId:
+    "client-id":
         "ATD8n3IfbhNYPl7czkKaVCsPnBJ31gWLMLqQ8YViGYmUZK4BLrXQEHbor9h0kJCM_YKnUN9Y88At4yvm",
-    currency: "USD",
-    intent: "capture",
+    "currency": "USD",
+    "intent": "capture",
 };
 function ProductDetails() {
-    const [eff, setEff] = useState();
+    const [eff, setEff] = useState({
+        title: "",
+        price: "",
+        description: "",
+        image: "",
+    });
 
     const [showForm, setForm] = useState(false);
     const title = useSearchParams().get("title");
     const price = useSearchParams().get("price");
     const description = useSearchParams().get("description");
     const image = useSearchParams().get("image");
-    const stuff = useSearchParams().get("stuffs");
-    // console.log(stuff);
-    useEffect(() => {
-        // fetch("https://countriesnow.space/api/v0.1/countries/population")
-        //     .then((response) => response.json())
-        //     .then((json) => setEff(json))
-        //     .catch((error) => console.error(error));
-        // console.log(eff);
-        fetch("https://api.countrystatecity.in/v1/countries")
-            .then((response) => response.text())
-            .then((result) => console.log(result))
-            .catch((error) => console.log("error", error));
-    }, []);
-    function displayForm() {
-        if (showForm) {
-            return <Form />;
-        }
-    }
+
     return (
         <>
             <section className="bg-gray-900 w-100 h-100">
                 {showForm ? (
-                    <div className="flex items-center justify-center backdrop-blur-sm  w-screen h-screen  fixed">
-                        <Form />
+                    <div className="flex flex-col items-center justify-center backdrop-blur-sm  w-screen h-screen  fixed">
+                        <div className="flex flex-col items-center justify-center w-full"><XMarkIcon className="justify-self-end h-6 w-6 text-blue-500" onClick={() => setForm(false)}></XMarkIcon></div>
+                        <Form price={price} title={title}/>
                     </div>
                 ) : (
                     <></>
                 )}
+                <Navbar fluid rounded className="bg-gray-900"> <NavbarLink href="./"><span className="text-white">Home</span></NavbarLink> </Navbar>
                 <div className="container mx-auto px-4 py-8">
                     <div className="bg-white rounded-lg shadow-md overflow-hidden">
                         <div className="flex">
                             <div className="w-1/2">
                                 <Image
                                     alt="product image"
-                                    src={`/${image}`}
+                                    src={`${image}`}
                                     layout="responsive"
                                     objectFit="cover"
                                     height={100}
@@ -80,11 +79,11 @@ function ProductDetails() {
                                     </span>
                                 </div>
                                 <button>
-                                    <PayPalScriptProvider
-                                        options={initialOptions}
-                                    >
-                                        <Checkout price={price}></Checkout>
-                                    </PayPalScriptProvider>
+
+                                {/* <PayPalScriptProvider options={initialOptions}>
+                                    <PayPalButtons></PayPalButtons>
+                                </PayPalScriptProvider> */}
+                                    {/* <Checkout price={price}></Checkout> */}
                                 </button>
 
                                 <button

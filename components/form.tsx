@@ -3,8 +3,26 @@ import { db } from "./firebase";
 import data from "../components/place.json";
 
 import { useEffect, useState, FormEvent, ChangeEvent } from "react";
-import { addDoc, collection, serverTimestamp } from "firebase/firestore";
-export default function Form() {
+import { addDoc, collection } from "firebase/firestore";
+import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
+import { Country, State, City } from "country-state-city";
+// import Checkout from "./Checkout";
+import Checkout from "./Checkout";
+import { title } from "process";
+const initialOptions = {
+    clientId:
+        "ATD8n3IfbhNYPl7czkKaVCsPnBJ31gWLMLqQ8YViGYmUZK4BLrXQEHbor9h0kJCM_YKnUN9Y88At4yvm",
+    currency: "USD",
+    intent: "capture",
+};
+interface Country {
+    name: string;
+    isocode: string;
+}
+interface Prop {
+    price: string;
+}
+export default function Form(props) {
     const [form, setForm] = useState({
         fname: "",
         lname: "",
@@ -13,154 +31,295 @@ export default function Form() {
         phone: "",
         address: "",
         city: " ",
+        state: "",
+        country: " ",
+        title: props.title,
     });
-    //  async function handleSubmit(event) {
-    //      try {
-    //         event.preventDefault();
+    const [effect, setEffect] = useState(false);
+    const [countryCode, setCountryCode] = useState("");
+    const [stateCode, setStateCode] = useState();
+    const countrydata = data.place;
+    function handleApprove(orderId) {
+        setEffect(true);
+        console.log(effect);
+    }
+    // console.log(Country.getAllCountries());
+    // useEffect(() => {
+    //     setCountryCode(form.count.slice(-3));
+    // }, [effect]);
 
-    //         await addDoc(collection(db, "messages"), {
-    //             text: form.text,
-    //             createdAt: serverTimestamp(),
-    //             uid: props.uid,
-    //             photoURL: props.photoURL,
-    //         });
+    const states = State.getStatesOfCountry(form.country).map((state) => (
+        <>
+            <option value={state.isoCode} key={state.isoCode}>
+                {state.name} - {state.isoCode}
+            </option>
+        </>
+    ));
+    const cities = City.getCitiesOfState(form.country, form.state).map(
+        (city) => (
+            <>
+                <option value={city.name} key={city.name}>
+                    {city.name}
+                </option>
+            </>
+        )
+    );
+    async function handleSubmit(event: { preventDefault: () => void }) {
+        event.preventDefault();
+        //  try {
+        //     event.preventDefault();
 
-    //         setForm((texts) => ({
-    //             ...texts,
-    //             text: "",
-    //         }));
-    //     } catch {
-    //         localStorage.clear();
-    //         window.location.reload();
-    //     }
-    // }
+        // await addDoc(collection(db, "Addresses"), {
+        //     fname: form.fname,
+        //     lname: form.lname,
+        //     email: form.email,
+        //     zipcode: form.zipcode,
+        //     phone: form.phone,
+        //     address: form.address,
+        //     city: form.city,
+        //     state: form.state,
+        //     country: form.country,
+        // });
+        alert(`Transaction completed by `);
+        setEffect((prev) => !prev);
+        // return <Checkout></Checkout>
+        // await setDoc(doc(db, "Addresses"), {
+        //     fname: form.fname,
+        //     lname: form.lname,
+        //     email: form.email,
+        //     zipcode: form.zipcode,
+        //     phone: form.phone,
+        //     address: form.address,
+        //     city: form.city,
+        //     state: form.state,
+        //     country: form.country,
+        // });
+
+        //     setForm((texts) => ({
+        //         ...texts,
+        //         text: "",
+        //     }));
+        // } catch {
+        //     localStorage.clear();
+        //     window.location.reload();
+        // }
+    }
 
     // const countries = data.place.map((country) => (
     //     <option  onChange={handleChange}>{country}</option>
     // ));
     // const x = data.
-    function handleChange(event: ChangeEvent<HTMLInputElement>) {
+    function handleChange(event: { target: { name: any; value: any } }) {
         setForm((prevform) => {
             return {
                 ...prevform,
                 [event.target.name]: event.target.value,
             };
         });
-        console.log(event.target.value);
+
+        console.log(props.price);
     }
+    // const price = price
+
     return (
         <>
             <div
-                className="flex items-center justify-center bg-white overflow-y-scroll w-4/5 h-full rounded-md backdrop-blur-md form-popup"
+                className="flex items-center justify-center bg-white overflow-y-scroll w-11/12 h-full rounded-md backdrop-blur-md form-popup"
                 id="myForm"
             >
-                <form className=" w-4/5 my-6 grid grid-cols-6  max-w-md flex-col gap-4">
-                    <div className="col-span-3">
-                        <div className="mb-2 block">
-                            <Label htmlFor="fname" value="Firstname" />
+                <form
+                    className=" w-11/12 my-6 flex items-center justify-center max-w-md flex-col gap-4"
+                    onSubmit={handleSubmit}
+                >
+                    <div>
+                        <div className="max-w-md col-span-4">
+                            <span>Select your country</span>
+                            <Select
+                                onChange={handleChange}
+                                id="countries"
+                                name="country"
+                                value={form.country}
+                                required
+                            >
+                                {Country.getAllCountries().map((country) => (
+                                    <>
+                                        {countrydata.includes(country.name) ? (
+                                            <option
+                                                key={country.isoCode}
+                                                value={country.isoCode}
+                                            >
+                                                {country.name} -{" "}
+                                                {country.isoCode}
+                                            </option>
+                                        ) : null}
+                                    </>
+                                ))}
+                            </Select>
                         </div>
-                        <TextInput
-                            onChange={handleChange}
-                            name="fname"
-                            value={form.fname}
-                            id="fname"
-                            type="text"
-                            placeholder="name@flowbite.com"
-                            required
-                        />
                     </div>
-                    <div className="col-span-3">
-                        <div className="mb-2 block">
-                            <Label htmlFor="lname" value="Lastname" />
-                        </div>
-                        <TextInput
-                            onChange={handleChange}
-                            name="lname"
-                            value={form.lname}
-                            id="lname"
-                            type="text"
-                            required
-                        />
-                    </div>
-                    <div className="col-span-4">
-                        <div className="mb-2 block">
-                            <Label htmlFor="email" value="email" />
-                        </div>
-                        <TextInput
-                            onChange={handleChange}
-                            name="email"
-                            value={form.email}
-                            id="email"
-                            type="email"
-                            required
-                        />
-                    </div>
-                    <div className="col-span-5  ">
-                        <div className="mb-2 block">
-                            <Label htmlFor="address" value="Address" />
-                        </div>
-                        <TextInput
-                            onChange={handleChange}
-                            id="address"
-                            type="text"
-                            sizing="lg"
-                            name="address"
-                            value={form.address}
-                            required
-                        />
-                    </div>
-                    <div className="col-span-4">
-                        <div className="mb-2 block">
-                            <Label htmlFor="city" value="City" />
-                        </div>
-                        <TextInput
-                            onChange={handleChange}
-                            id="city"
-                            type="text"
-                            required
-                        />
-                    </div>
-                    <div className="col-span-4">
-                        <div className="mb-2 block ">
-                            <Label htmlFor="zipcode" value="zipcode" />
-                        </div>
-                        <TextInput
-                            onChange={handleChange}
-                            name="phone"
-                            value={form.zipcode}
-                            id="zipcode"
-                            type="text"
-                            required
-                        />
-                    </div>
-                    <div className="col-span-4">
-                        <div className="mb-2 block ">
-                            <Label htmlFor="phone" value="phone" />
-                        </div>
-                        <TextInput
-                            onChange={handleChange}
-                            name="phone"
-                            value={form.phone}
-                            type="number"
-                            id="phone"
-                            required
-                        />
-                    </div>
-                    <div className="max-w-md col-span-4">
-                        <div className="mb-2 block">
-                            <Label
-                                htmlFor="countries"
-                                value="Select your country"
+                    <div className="grid gap-4 gap-x-8 grid-cols-4">
+                        <span className="col-span-4">Contact information</span>
+                        <div className="col-span-2">
+                            {/* <span>contact info</span> */}
+                            {/* <div className="mb-2 block">
+                                <Label htmlFor="fname" value="contact info" />
+                            </div> */}
+                            <TextInput
+                                onChange={handleChange}
+                                name="fname"
+                                value={form.fname}
+                                id="fname"
+                                type="text"
+                                placeholder="firstname"
+                                required
                             />
                         </div>
-                        <Select id="countries" required>
-                            {/* {countries} */}
-                        </Select>
+                        <div className="col-span-2">
+                            <TextInput
+                                onChange={handleChange}
+                                name="lname"
+                                value={form.lname}
+                                id="lname"
+                                type="text"
+                                placeholder="lastname"
+                                required
+                            />
+                        </div>
+                        <div className="col-span-2">
+                            <TextInput
+                                onChange={handleChange}
+                                name="email"
+                                value={form.email}
+                                id="email"
+                                type="email"
+                                placeholder="email"
+                                required
+                            />
+                        </div>
+                        <div className="col-span-2">
+                            <TextInput
+                                onChange={handleChange}
+                                name="phone"
+                                value={form.phone}
+                                type="number"
+                                id="phone"
+                                placeholder="phone"
+                                required
+                            />
+                        </div>
                     </div>
-
-                    <Button className="col-span-6" type="submit">
-                        Submit
-                    </Button>
+                    <div className="grid gap-4 gap-x-8 grid-cols-6">
+                        <span>Address</span>
+                        <div className="col-span-6  ">
+                            {/* <div className="mb-2 block">
+                                <Label htmlFor="address" value="Address" />
+                            </div> */}
+                            <TextInput
+                                onChange={handleChange}
+                                id="address"
+                                type="text"
+                                sizing="lg"
+                                name="address"
+                                value={form.address}
+                                placeholder="House number, Street name"
+                                required
+                            />
+                        </div>
+                        <div className="col-span-2">
+                            <Select
+                                onChange={handleChange}
+                                id="states"
+                                name="state"
+                                value={form.state}
+                                required
+                            >
+                                {states}
+                            </Select>
+                            {/* <TextInput
+                                onChange={handleChange}
+                                id="state"
+                                type="text"
+                                placeholder="state"
+                                required
+                            /> */}
+                        </div>
+                        <div className="col-span-2">
+                            <Select
+                                onChange={handleChange}
+                                id="cities"
+                                name="city"
+                                value={form.city}
+                                required
+                            >
+                                {cities}
+                            </Select>
+                            {/* <TextInput
+                                onChange={handleChange}
+                                id="state"
+                                type="text"
+                                placeholder="state"
+                                required
+                            /> */}
+                        </div>
+                        {/* <div className="col-span-2">
+                            <TextInput
+                                onChange={handleChange}
+                                id="city"
+                                type="text"
+                                placeholder="city"
+                                required
+                            />
+                        </div> */}
+                        <div className="col-span-2">
+                            <TextInput
+                                onChange={handleChange}
+                                name="zipcode"
+                                value={form.zipcode}
+                                id="zipcode"
+                                type="text"
+                                placeholder="zipcode"
+                                required
+                            />
+                        </div>
+                    </div>
+                    <div className="col-span-4">
+                        <PayPalScriptProvider options={initialOptions}>
+                            {/* <Checkout price={props.price}></Checkout> */}
+                            <PayPalButtons
+                                createOrder={(data, actions) => {
+                                    return actions.order.create({
+                                        purchase_units: [
+                                            {
+                                                amount: {
+                                                    // value: "56",
+                                                    value: `${props.price}`,
+                                                },
+                                            },
+                                        ],
+                                    });
+                                }}
+                                onApprove={async (data, actions) => {
+                                    const details =
+                                        await actions.order.capture();
+                                    const name = details.payer.name.given_name;
+                                    alert(`Transaction completed by ${name}`);
+                                    handleApprove(data.orderID);
+                                }}
+                            ></PayPalButtons>
+                        </PayPalScriptProvider>
+                    </div>
+                    {effect ? (
+                        <Button className="btn " type="submit">
+                            Submit
+                        </Button>
+                    ) : (
+                        <Button
+                            className="btn cursor-not-allowed opacity-50"
+                            type="submit"
+                        >
+                            Submit
+                        </Button>
+                    )}
                 </form>
             </div>
         </>

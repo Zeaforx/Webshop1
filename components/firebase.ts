@@ -8,12 +8,18 @@ import { Firestore, getFirestore } from "firebase/firestore";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-    apiKey: "AIzaSyDbwJJci6ZLPQfln4EEw9BnypAcSWOVUJ0",
-    authDomain: "leaf-area-calc.firebaseapp.com",
-    projectId: "leaf-area-calc",
-    storageBucket: "leaf-area-calc.appspot.com",
-    messagingSenderId: "578193429836",
-    appId: "1:578193429836:web:ac5d224ea2e6047bb8abe9",
+    apiKey: process.env.REACT_APP_API_KEY,
+    authDomain: process.env.REACT_APP_AUTH_DOMAIN,
+    projectId: process.env.REACT_APP_PROJECT_ID,
+    storageBucket: process.env.REACT_APP_STORAGE_BUCKET,
+    messagingSenderId: process.env.REACT_APP_MESSAGING_SENDER_ID,
+    appId: process.env.REACT_APP_APP_ID,
+    // apiKey: "AIzaSyDbwJJci6ZLPQfln4EEw9BnypAcSWOVUJ0",
+    // authDomain: "leaf-area-calc.firebaseapp.com",
+    // projectId: "leaf-area-calc",
+    // storageBucket: "leaf-area-calc.appspot.com",
+    // messagingSenderId: "578193429836",
+    // appId: "1:578193429836:web:edb364d67e6a18aab8abe9"
 };
 
 // Initialize Firebase
