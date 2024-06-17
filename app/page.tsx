@@ -46,10 +46,10 @@ export default function Home() {
     if (data) {
         // console.log(data);
     }
-    // if (error) {
-    //     return <h1>{error.message}</h1>;
-    // }
-    const productss: String[] = data;
+    if (error) {
+        console.log(error);
+    }
+    const productss = data;
     // console.log(productss);
 
     useEffect(() => {
@@ -103,6 +103,52 @@ export default function Home() {
             {/* </section> */}
             <section className="flex bg-gray-900 text-white justify-center items-center">
                 <div className="grid grid-cols-1 lg:grid-cols-5 md:grid-cols-3 gap-x-16 gap-y-6 ">
+                    {products.map((product) => {
+                        const id = product.id;
+                        const slug = id;
+                        // stuff.push(product);
+
+                        // const slug = id.toLowerCase().replace(/\s+/g, "-");
+                        return (
+                            <div key={product.id}>
+                                <Link
+                                    href={{
+                                        pathname: `/${slug}`,
+                                        query: {
+                                            title: product.title,
+                                            description: product.description,
+                                            price: product.price,
+                                            // stuffs: stuff[id],
+                                            image: product.image,
+                                        },
+                                    }}
+                                    // as={slug}
+                                >
+                                    <div
+                                        className="flex items-center justify-center text-gray-900 border-2 h-64 w-48 rounded-t-lg  border-white product-img bg-cat"
+                                        // className=``
+                                        style={{
+                                            backgroundImage: `url(${product.image})`,
+                                            backgroundPosition: "center",
+                                            backgroundRepeat: "no-repeat",
+                                            backgroundSize: "cover",
+                                        }}
+                                    >
+                                        {/* <p>{product.title}</p> */}
+                                        {/* <Image
+                                        height={100}
+                                        width={100}
+                                        src={product.image}
+                                    /> */}
+                                    </div>
+                                    <div className=" bg-white text-black over-text self-end  w-48">
+                                        <span>{product.title}</span>
+                                        <span>{product.price}</span>
+                                    </div>
+                                </Link>
+                            </div>
+                        );
+                    })}
                     {loading ? (
                         <div className="lds-ring">
                             <div></div>

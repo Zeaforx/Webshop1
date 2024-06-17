@@ -9,8 +9,6 @@ function RG() {
     return (
         <form>
             <select></select>
-            {/* <select>{statedata}</select> */}
-            //{" "}
         </form>
         // <Checkout></Checkout>
     );
