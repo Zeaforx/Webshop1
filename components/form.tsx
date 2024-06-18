@@ -291,6 +291,7 @@ export default function Form(props) {
                                         purchase_units: [
                                             {
                                                 amount: {
+                                                    currency_code: "USD",
                                                     // value: "56",
                                                     value: `${props.price}`,
                                                 },
