@@ -39,7 +39,7 @@ function ProductDetails() {
 
     return (
         <>
-            <section className="bg-gray-900 w-100 h-100">
+            <section className="bg-gray-900 w-100 h-screen">
                 {showForm ? (
                     <div className="flex flex-col items-center justify-center backdrop-blur-sm  w-screen h-screen  fixed">
                         <div className="flex flex-col items-center justify-center w-full"><XMarkIcon className="justify-self-end h-6 w-6 text-blue-500" onClick={() => setForm(false)}></XMarkIcon></div>
@@ -50,9 +50,9 @@ function ProductDetails() {
                 )}
                 <Navbar fluid rounded className="bg-gray-900"> <NavbarLink href="./"><span className="text-white">Home</span></NavbarLink> </Navbar>
                 <div className="container mx-auto px-4 py-8">
-                    <div className="bg-white rounded-lg shadow-md overflow-hidden">
-                        <div className="flex flex-col  md: flex-row lg: flex-row">
-                            <div className="w-1/2">
+                    <div className="h-5/6 bg-white  rounded-lg shadow-md overflow-hidden">
+                        <div className="flex  flex-col sm:flex-row ">
+                            <div className="w-3/4">
                                 <Image
                                     alt="product image"
                                     src={`${image}`}
