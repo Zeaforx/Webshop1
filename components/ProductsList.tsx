@@ -24,7 +24,7 @@ function ProductsList() {
     if (error) {
         return <h1>{error.message}</h1>;
     }
-    console.log(data);
+    // console.log(data);
     // const map = data.map((product) => {
     //     const uid = product.uid;
     //     const text = product.text;
@@ -40,7 +40,7 @@ function ProductsList() {
     //         </div>
     //     );
     // });
-    console.log(data);
+    // console.log(data);
     return (
         <>
             <h1>wonks</h1>

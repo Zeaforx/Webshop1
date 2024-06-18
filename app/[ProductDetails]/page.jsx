@@ -51,7 +51,7 @@ function ProductDetails() {
                 <Navbar fluid rounded className="bg-gray-900"> <NavbarLink href="./"><span className="text-white">Home</span></NavbarLink> </Navbar>
                 <div className="container mx-auto px-4 py-8">
                     <div className="bg-white rounded-lg shadow-md overflow-hidden">
-                        <div className="flex">
+                        <div className="flex flex-col  md: flex-row lg: flex-row">
                             <div className="w-1/2">
                                 <Image
                                     alt="product image"
@@ -63,7 +63,7 @@ function ProductDetails() {
                                 />
                                 {/* <img src="https://via.placeholder.com/400" alt="Product Image" className="w-full"> */}
                             </div>
-                            <div className="w-1/2 p-8">
+                            <div className="w-100 p-8">
                                 <h1 className="text-3xl font-bold mb-4">
                                     {title}
                                 </h1>

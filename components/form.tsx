@@ -117,7 +117,7 @@ export default function Form(props) {
             };
         });
 
-        console.log(props.price);
+        // console.log(props.price);
     }
     // const price = price
 

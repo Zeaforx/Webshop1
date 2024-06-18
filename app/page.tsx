@@ -119,7 +119,7 @@ export default function Home() {
                                             description: product.description,
                                             price: product.price,
                                             // stuffs: stuff[id],
-                                            image: product.image,
+                                            image: `${product.image}`,
                                         },
                                     }}
                                     // as={slug}
@@ -190,7 +190,7 @@ export default function Home() {
                                                 // image: product.img,
                                             },
                                         }}
-                                        // as={slug}
+                                        // as={`${slug}`}
                                     >
                                         <div
                                             className="flex items-center justify-center text-gray-900 border-2 h-64 w-48 rounded-t-lg  border-white product-img bg-cat"
