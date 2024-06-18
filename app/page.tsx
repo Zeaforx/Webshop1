@@ -169,7 +169,7 @@ export default function Home() {
                         <></>
                     )}
                     {data ? (
-                        productss.map((product) => {
+                        data.map((product) => {
                             const id = product.title;
                             const slug = id;
                             // stuff.push(product);
